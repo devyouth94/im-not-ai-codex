@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  offline:
+    env:
+      PYTHONUTF8: "1"
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.11", "3.12"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m unittest discover -s plugins/im-not-ai/tests
+      - run: python plugins/im-not-ai/scripts/build_quick_rules.py --check
+      - run: python plugins/im-not-ai/scripts/build_diagnosis_rules.py --check
