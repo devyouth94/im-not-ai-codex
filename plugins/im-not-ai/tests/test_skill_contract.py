@@ -77,6 +77,11 @@ class SkillContractTests(unittest.TestCase):
                 self.assertIn(field, text)
             self.assertIn("shell, network, Git", text)
 
+    def test_each_runtime_role_uses_a_fresh_subagent(self) -> None:
+        self.assertIn("각 역할 호출(청크별 monolith 호출 포함)은 새 Codex", self.skill)
+        self.assertIn("`followup_task` 등 후속\n  메시지로 다른 역할", self.skill)
+        self.assertIn("하나의 역할만 수행한다", self.skill)
+
     def test_upstream_behavior_contract_is_preserved(self) -> None:
         diagnostician = self.roles["humanize-diagnostician.md"]
         monolith = self.roles["humanize-monolith.md"]
